@@ -10,7 +10,7 @@ using namespace cv;
 int main(int, char**)
 {
     double scale = 0.5;
-    Mat frame = imread("/home/francesco/Desktop/OpenCV/Test_Dataset/img11.jpg");
+    Mat frame = imread(""); //insert here path of the image
     resize(frame, frame, Size(), scale, scale, INTER_LINEAR);
 
     cv::namedWindow("Camera", cv::WINDOW_AUTOSIZE);
