@@ -38,15 +38,7 @@ int main(int, char**)
     auto totalTime = (end - start)/ getTickFrequency();
     putText(frame, to_string(totalTime) + " s", Point(30, 30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(250, 0, 150), 2);
 
-    /*fstream file;
-    file.open("/home/francesco/Desktop/Iou HOG/hog.txt",ios_base::out);
-
-    for(size_t i = 0; i < toFile.size(); i++)
-    {
-        file<<toFile[i]<<endl;
-    }
-
-    file.close();*/
+    
     cv::imshow("Camera",frame);
 
     waitKey(0);
