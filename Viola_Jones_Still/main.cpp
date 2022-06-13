@@ -33,7 +33,7 @@ int main(int, char**)
 
     /* Load the classifiers from a "data" provided by openCV, so already trained
     /  It is basetoolpoollikujmnhhytgbvfredcxswqazasdsdfdgffhgjhjklipiuyutreewd on Haar features that use the integral image for evaluation and are really fast to compute */
-    String body_cascade_name = "/home/francesco/opencv/data/haarcascades/haarcascade_fullbody.xml";
+    String body_cascade_name = ".../Viola_Jones_Still/Data/haarcascade_fullbody.xml";
     body_cascade.load(body_cascade_name);
 
     /* For efficiency reasons and to reduce computations,
