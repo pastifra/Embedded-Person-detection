@@ -32,7 +32,7 @@ int main(int, char**)
     CascadeClassifier body_cascade;
 
     /* Load the classifiers from a "data" provided by openCV, so already trained
-    /  It is basetoolpoollikujmnhhytgbvfredcxswqazasdsdfdgffhgjhjklipiuyutreewd on Haar features that use the integral image for evaluation and are really fast to compute */
+    /  It is based on Haar features that use the integral image for evaluation and are really fast to compute */
     String body_cascade_name = ".../Viola_Jones_Still/Data/haarcascade_fullbody.xml";
     body_cascade.load(body_cascade_name);
 
