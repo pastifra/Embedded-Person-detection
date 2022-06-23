@@ -1,11 +1,17 @@
+/* FOR THE RASPBERRY PI 32-bit BULLSEYE OS
+/  This code achieves a real time person detection via the HOG detector
+/  provided by OpenCV on the target device Raspberry Pi with OS mentioned above
+/  In order to detect the camera connected to the Raspberry the gstreamer_pipeline is used */
+
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
 using namespace std;
 using namespace cv;
-/// For the Raspberry Pi 32-bit Bullseye OS
 
+/*Pipeline parameters*/
 std::string gstreamer_pipeline(int capture_width, int capture_height, int framerate, int display_width, int display_height) {
     return
             " libcamerasrc ! video/x-raw, "
@@ -39,6 +45,7 @@ int main()
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 
 
+    /*Start video capturing and check if there's a camera connected*/
     cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
     if(!cap.isOpened())
     {
@@ -52,21 +59,24 @@ int main()
     std::cout << "Hit ESC to exit" << "\n" ;
     while(true)
     {
-    	if (!cap.read(frame))
+    	if (!cap.read(frame)) //read the frame from the camera
     	{
             std::cout<<"Capture read error"<<std::endl;
             break;
         }
-        resize(frame, frame, Size(), scale, scale, INTER_LINEAR);
+        
+        resize(frame, frame, Size(), scale, scale, INTER_LINEAR); //Optional resizing to achieve better performances
+        
+        /*Get the detected bodies for the frame*/
         vector<Rect> bodies;
         auto start = getTickCount();
         hog.detectMultiScale(frame, bodies, 0, Size(8,8), Size(), 1.05, 2, false);
         auto end = getTickCount();
-
+        
         auto totalTime = (end - start)/ getTickFrequency();
-
         auto fps = 1/totalTime;
-        //show frame
+        
+        //Show frame
         for(vector<Rect>::iterator i = bodies.begin(); i != bodies.end(); ++i)
         {
             Rect &r = *i;
@@ -75,13 +85,14 @@ int main()
 
         putText(frame, to_string(fps) + " fps", Point(40, 40), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(250, 0, 150), 2);
 
-        resize(frame, frame, Size(), 3, 3, INTER_LINEAR);
+        resize(frame, frame, Size(), 3, 3, INTER_LINEAR); //Resizing for better user visualization
+       
         cv::imshow("Camera",frame);
 
+        /*If user press esc then stop the program*/
         char esc = cv::waitKey(5);
         if(esc == 27)
         {
-            //imwrite("/home/francesco/Desktop/OpenCV/HOG/Results/ped_05 .jpg", frame);
             break;
         }
     }
