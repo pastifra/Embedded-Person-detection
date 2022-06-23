@@ -35,6 +35,7 @@ int main()
     int framerate = 15 ;
     int display_width = 640;
     int display_height = 480;
+    float scale = 1.0;
 
     //reset frame average
     std::string pipeline = gstreamer_pipeline(capture_width, capture_height, framerate,
@@ -61,6 +62,8 @@ int main()
 
     cv::namedWindow("Camera", cv::WINDOW_AUTOSIZE);
     cv::Mat frame;
+    
+    
 
     std::cout << "Hit ESC to exit" << "\n" ;
     while(true)
@@ -69,9 +72,33 @@ int main()
             std::cout<<"Capture read error"<<std::endl;
             break;
         }
+        /* For efficiency reasons and to reduce computations,
+        /  convert the frame into GrayScale and resize it significantely to reduce the number of pixels hence features
+        /  equalize hist to also reduce the number of features and mantain only the significant ones */
+        Mat frame_gray;
+        cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+        resize(frame_gray, frame_gray, Size(), scale, scale, INTER_LINEAR);
+        equalizeHist(frame_gray,frame_gray);
+        
+        std::vector<Rect> bodies; // Rect is a Template class for 2D rectangles, it contains top left corner(x and y), width and height
+        
+        auto start = getTickCount();
+        body_cascade.detectMultiScale(frame_gray, bodies); // Detect objects of different sizes in the input image, the rectangle should contain the detected object
+        auto end = getTickCount();
+        
+        auto totalTime = (end - start)/ getTickFrequency();
+        auto fps = 1/totalTime;
+        
+        //Draw the deteced bodie on the frame
+        for(vector<Rect>::iterator i = bodies.begin(); i != bodies.end(); ++i)
+        {
+            Rect &r = *i;
+            rectangle(frame, r.tl(), r.br(), Scalar(0,255,0), 2);
+        }
 
-        /*Get the acquired frame and elaborate it with a custom class*/
-        detectAndDisplay(frame, face_cascade, body_cascade);
+        putText(frame, to_string(fps) + " fps", Point(40, 40), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(250, 0, 150), 2); //Draw also the fps
+
+        resize(frame, frame, Size(), 3, 3, INTER_LINEAR); //Resizing for better user visualization
 
         char esc = cv::waitKey(5);
         if(esc == 27) break;
