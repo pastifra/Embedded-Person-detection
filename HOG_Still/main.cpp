@@ -9,34 +9,32 @@ using namespace cv;
 
 int main(int, char**)
 {
-    double scale = 0.5;
+    double scale = 1.0;
     Mat frame = imread(""); //insert here path of the image
-    resize(frame, frame, Size(), scale, scale, INTER_LINEAR);
+    resize(frame, frame, Size(), scale, scale, INTER_LINEAR); //optional resizing of the image to obtain better performances
 
     cv::namedWindow("Camera", cv::WINDOW_AUTOSIZE);
 
-    HOGDescriptor hog; //(Size(48,96), Size(16,16), Size(8,8), Size(8,8), 9); <- for daimler //initialization of hog descriptor
-    //DEF = 64, DAIM = 48
-    //DEF = 128, DAIM = 96
+    /*Initialization of the HOG descriptor with the default People Detector provided by OpenCV*/
+    HOGDescriptor hog; 
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
     vector<Rect> bodies;
 
-
+    /*Actual detection over multiple scales, start and end are needed to count the inference time*/
     auto start = getTickCount();
-
     hog.detectMultiScale(frame, bodies, 0, Size(8,8), Size(), 1.05, 2, false);//true for Daimler
-
-    vector<Rect> toFile;
     auto end = getTickCount();
+    
+    auto totalTime = (end - start)/ getTickFrequency(); //Total inference time
+    
+    /*For loop to draw on the image all the detected bodies*/
     for(vector<Rect>::iterator i = bodies.begin(); i != bodies.end(); ++i)
-    {
-        Rect &r = *i;
+    {   Rect &r = *i;
         rectangle(frame, r.tl(), r.br(), Scalar(0,255,0), 2);
-        toFile.push_back(r);
     }
 
-    auto totalTime = (end - start)/ getTickFrequency();
-    putText(frame, to_string(totalTime) + " s", Point(30, 30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(250, 0, 150), 2);
+    
+    putText(frame, to_string(totalTime) + " s", Point(30, 30), FONT_HERSHEY_SIMPLEX, 1.0, Scalar(250, 0, 150), 2); //Draw also the total time
 
     
     cv::imshow("Camera",frame);
