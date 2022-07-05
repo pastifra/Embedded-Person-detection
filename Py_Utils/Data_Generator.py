@@ -1,40 +1,39 @@
 class DataGenerator(tf.keras.utils.Sequence):
-    'Generates data for Keras'
+    'Batch data generator for Keras Yolo implementation'
     def __init__(self, path_list, bboxes_list, batch_size=25, dim=(448,448,3),
                  divisions=7, shuffle=True):
-        'Initialization'
-        self.dim = dim
+        
+        self.dim = dim # image dimension to feed the network
         self.batch_size = batch_size
-        self.path_list = path_list
-        self.S = divisions
-        self.bboxes_list = bboxes_list
-        self.shuffle = shuffle
-        self.on_epoch_end() #triggered at beginning and end of each epoch
-        self.cell_size = dim[0]/divisions
+        self.path_list = path_list # list of all the path to the images
+        self.S = divisions # grid size
+        self.bboxes_list = bboxes_list # list of all the bboxes of each image (len(path_list) = len(bboxes_list))
+        self.shuffle = shuffle # if true shuffle the data to generate the batches -> More robust learning
+        self.on_epoch_end() # triggered at beginning and end of each epoch
+        self.cell_size = dim[0]/divisions # Number of pixels in width and height of each cell
 
     def __len__(self):
-        'Denotes the number of batches per epoch'
+        'Denote the number of batches per epoch'
         return int(np.floor(len(self.path_list) / self.batch_size))
 
     def __getitem__(self, index):
       
         'Generate one batch of data'
-        # Generate indexes of the batch
-        indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
+        indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size] # Generate indexes of the batch to extract from the two lists
 
-        # Generate data
         X, Y = self.__data_generation(indexes)
 
         return X, Y
 
     def on_epoch_end(self):
+        
         'Updates indexes after each epoch'
         self.indexes = np.arange(len(self.path_list))
         if self.shuffle == True: # For more robust data
             np.random.shuffle(self.indexes)
 
     def __data_generation(self, indexes):
-        'Generates data containing batch_size samples' # X : (n_samples, *dim, n_channels)
+        'Generates data containing batch_size samples' # X : (n_samples, *dim)
         # Initialization
         X = np.empty((self.batch_size, *self.dim))
         Y = np.empty((self.batch_size,self.S,self.S,5))
@@ -54,11 +53,12 @@ class DataGenerator(tf.keras.utils.Sequence):
           image /= 255.0
           y_img = np.zeros((self.S,self.S,5))
           for box in self.bboxes_list[i]:
+            # Scale the bboxes into new format
             xleft = int(box[0] * scale_w)
             yleft = int(box[1] * scale_h)
             b_width = int(box[2] * scale_w)
             b_height = int(box[3] * scale_h)
-            
+            # Get center of bbox
             ox = xleft + b_width/2
             oy = yleft + b_height/2
             # Calculate the coordinates of the cell in the grid that contains the center 
