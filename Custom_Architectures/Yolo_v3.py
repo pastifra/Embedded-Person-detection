@@ -99,12 +99,12 @@ x = LeakyReLU(alpha = 0.1)(x)
 out = Conv2D(256, (1, 1), padding="same", use_bias = False)(x)
 out = BatchNormalization()(out)
 out = LeakyReLU(alpha = 0.1)(out)
-bbox = Conv2D(4, (1, 1), padding="same",activation = "sigmoid", use_bias = False)(out)
+bbox = Conv2D(4, (1, 1), padding="same", name = "bbox",activation = "sigmoid", use_bias = False)(out)
 
 out1 = Conv2D(256, (1, 1), padding="same", use_bias = False)(x)
 out1 = BatchNormalization()(out1)
 out1 = LeakyReLU(alpha = 0.1)(out1)
-prob = Conv2D(1, (1, 1), padding="same",activation = "sigmoid", use_bias = False)(out1)
+prob = Conv2D(1, (1, 1), padding="same", name = "prob",activation = "sigmoid", use_bias = False)(out1)
 
 model = Model(inp,[bbox, prob])
 
