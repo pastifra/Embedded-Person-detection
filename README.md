@@ -32,4 +32,9 @@ La soluzione basata su Yolo v6 nano, fine tuned sul training dataset propone un 
 Hog è un altro algoritmo off-the shelf, che non si basa su rete neurali, implementabile molto facilmente con la libreria opencv.
 
 
+## TO DO : YOLO HEATMAP ##
+
+Develop a new type of solution based on Yolo.
+The idea is to downsaple the image with convolutional layers.
+Then at three resolutions (7x7, 14x14, 28x28) produce a probability prediction based on the centroid.
 
