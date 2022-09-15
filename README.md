@@ -19,6 +19,10 @@ Nella cartella Tester può poi essere osservato il codice utilizzato per testare
 
 <img src="/Comparison.jpg">
 
+| Algoritmo | Yolo v3 | Yolo Custom | Yolo Custom DW | Yolo v6 nano |
+| :-------: | :-----: | :---------: | :------------: | :----------: |
+| FPS       | 0.2     | 3.2         | 4.8            | 2.5          |
+
 Come può essere notato in figura, e osservato in tabella la soluzione Yolo v3 "off-the-shelf", avendo di gran lunga il numero di filtri e layer maggiori è quella con performance di detection migliori ma non è possibile farla funzionare in real time sul Pi 4.
 
 La soluzione Custom ha performance peggiori, la curva scende più in fretta sintomo di scarsa precisione nelle detection proposte. (Ragioni : Pochi parametri, training difficile da fare da zero e detection proposte dalla rete solo 49). Tuttavia è la migliore come velocità.
@@ -27,8 +31,5 @@ La soluzione basata su Yolo v6 nano, fine tuned sul training dataset propone un 
 
 Hog è un altro algoritmo off-the shelf, che non si basa su rete neurali, implementabile molto facilmente con la libreria opencv.
 
-| Attempt | #1    | #2    |
-| :---:   | :---: | :---: |
-| Seconds | 301   | 283   |
 
 
