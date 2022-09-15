@@ -21,7 +21,7 @@ Nella cartella Tester può poi essere osservato il codice utilizzato per testare
 
 | Algoritmo | Yolo v3 | Yolo Custom | Yolo Custom DW | Yolo v6 nano |
 | :-------: | :-----: | :---------: | :------------: | :----------: |
-| *FPS*     | 0.2     | 3.2         | 4.8            | 2.5          |
+| **FPS**   | 0.2     | 3.2         | 4.8            | 2.5          |
 
 Come può essere notato in figura, e osservato in tabella la soluzione Yolo v3 "off-the-shelf", avendo di gran lunga il numero di filtri e layer maggiori è quella con performance di detection migliori ma non è possibile farla funzionare in real time sul Pi 4.
 
