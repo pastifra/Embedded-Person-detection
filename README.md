@@ -12,8 +12,8 @@ Analizzati questi limiti vengono proposte due soluzioni:
   * Yolo_custom_TRAIN.ipynb per effettuare il training della rete 
   * Yolo_custom_DEPLOY_Pi4.py per osservare le prestazioni della rete in real time sul raspberry Pi 4 (I due diversi modelli da caricare sono in formato .pb e si trovano nella sotto-cartella Model)
 * Yolo v6 nano : Questa soluzione si basa su una rete stato dell'arte che utilizza pesi già trainati dagli autori, è stato fatto un training ulteriore per adattare la rete alla classe persona. Il codice si trova nella cartella Yolo_v6_Nano ed è così organizzato :
- * Yolo_v6n_TRAIN.ipynb per effettuare il training della rete su un dataset customizzato
- * Yolo_v6n_DEPLOY.py per osservare le prestazioni della rete sul raspberry Pi 4 (Il modello è in formato .onnx nella cartella Model e serve caricare anche il  file coco.names)
+  * Yolo_v6n_TRAIN.ipynb per effettuare il training della rete su un dataset customizzato
+  * Yolo_v6n_DEPLOY.py per osservare le prestazioni della rete sul raspberry Pi 4 (Il modello è in formato .onnx nella cartella Model e serve caricare anche il  file coco.names)
 
 Nella cartella Tester può poi essere osservato il codice utilizzato per testare le performance delle soluzioni proposte.
 
