@@ -17,4 +17,4 @@ Analizzati questi limiti vengono proposte due soluzioni:
 
 Nella cartella Tester può poi essere osservato il codice utilizzato per testare le performance delle soluzioni proposte.
 
-<img src="">
+<img src="/comparison.eps">
